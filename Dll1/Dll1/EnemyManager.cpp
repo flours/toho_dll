@@ -51,7 +51,6 @@ bool EnemyManager::hit_judge()
 }
 
 void EnemyManager::draw() const
-
 {
 	for (const auto enemy : _list) {
 		enemy->draw();

@@ -16,7 +16,11 @@ const static float SPEED = 9;
 Player::Player() : 
 _x((float)Define::CENTER_X),
 _y((float)Define::CENTER_Y),
-_shot(this)
+_shot(this),
+_life(3),
+_flag(0),
+_cnt(0),
+_mutekicnt(0)
 {
 }
 	
@@ -43,6 +47,7 @@ void Player::calc() {
 		_x = Define::CENTER_X;//座標セット
 		_y = Define::IN_H + 30;
 		_mutekicnt++;//無敵状態へ
+		_life--;
 	}
 	if (_flag == 2) {//死んで浮上中なら
 		unsigned int push = Dllinput::input_check(Dllinput::left) + Dllinput::input_check(Dllinput::right)
@@ -156,11 +161,21 @@ void Player::hit_judge(bullet_t* bullet) {
 
 void Player::hit(bullet_t* bullet,int n) {
 	bullet[n].flag = 0;//弾をオフ
-
 						/*喰らいボム処理をここに追加*/
-
 	if (_flag == 0 && _mutekicnt == 0) {//ステータスが通常で、無敵じゃなかったら
 		_flag = 2;    //1:喰らいボム受付中　2:死んで浮き上がり中
 		_cnt = 0;
 	}
+}
+
+int Player::getreward() {
+	int reward = 0;
+	if (_cnt == 0 && _flag == 2) {//今の瞬間死んだら
+		reward = -1;
+	}
+	return reward;
+}
+
+int Player::getdone() {
+	return _life == 0 ? 1 : 0;
 }

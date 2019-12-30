@@ -26,11 +26,9 @@ void SystemMain::finalize() const
 /*!
 * @brief ƒƒCƒ“ˆ—
 */
-void SystemMain::main() const
+void SystemMain::main()
 {
 //	while (!ScreenFlip() && !ProcessMessage() && !ClearDrawScreen()) {
 	//TODO ‰æ–Ê•\¦
-
-
 	looper.loop();
 }

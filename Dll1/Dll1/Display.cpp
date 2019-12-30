@@ -2,8 +2,13 @@
 #include "Define.h"
 #include "Display.h"
 #include<iostream>
+#include <stdio.h>
 
 cv::Mat Display::main_image(Define::WIN_H, Define::WIN_W, CV_8UC3,cv::Scalar(255));
+int Display::_reward = 0;
+int Display::_done = 0;
+int Display::_life = 0;
+int Display::reset_flag = 0;
 
 void Display::image_reset() {
 	Display::main_image = cv::Mat(Define::WIN_H, Define::WIN_W, CV_8UC3, cv::Scalar(0,0,0));
@@ -33,15 +38,15 @@ void Display::draw_image(cv::Mat image,int x,int y) {
 
 	if ((int)orig_x + image.cols / 2 <= 0)return;
 	if ((int)orig_y + image.rows / 2 <= 0)return;
-	if ((int)orig_x - image.cols / 2 < 0) { w = image.cols + ((int)orig_x - image.cols / 2); x = 0; }
+	if ((int)orig_x - image.cols / 2 <= 0) { w = image.cols + ((int)orig_x - image.cols / 2); x = 0; }
 	else x -= w/2;
-	if ((int)orig_y - image.rows / 2 < 0) { h = image.rows + ((int)orig_y - image.rows / 2); y = 0; }
+	if ((int)orig_y - image.rows / 2 <= 0) { h = image.rows + ((int)orig_y - image.rows / 2); y = 0; }
 	else y -= h/2;
 	if ((int)orig_x - image.cols / 2 >= Define::OUT_W)return;
 	if ((int)orig_y - image.rows / 2 >= Define::OUT_H)return;
-	if ((int)orig_x + image.cols / 2 > Define::OUT_W) { w = Define::OUT_W - ((int)orig_x - image.cols / 2);	x = Define::OUT_W-w; }
+	if ((int)orig_x + image.cols / 2 >= Define::OUT_W) { w = Define::OUT_W - ((int)orig_x - image.cols / 2);	x = Define::OUT_W - w; }
 
-	if ((int)orig_y + image.rows / 2 > Define::OUT_H) { h = Define::OUT_H - ((int)orig_y - image.rows / 2);	y = Define::OUT_H - h; }
+	if ((int)orig_y + image.rows / 2 >= Define::OUT_H) { h = Define::OUT_H - ((int)orig_y - image.rows / 2);	y = Define::OUT_H - h; }
 
 	cv::Mat roi = Display::main_image(cv::Rect(x, y, w, h));
 
@@ -50,7 +55,7 @@ void Display::draw_image(cv::Mat image,int x,int y) {
 	else x = 0;
 	if ((int)orig_y - image.rows / 2 < 0)y = -((int)orig_y - image.rows / 2);
 	else y = 0;
-
+//	printf("a");
 	image = image(cv::Rect(x, y, w, h));
 
 	cv::Mat newimg;
@@ -81,5 +86,25 @@ void Display::draw_image(cv::Mat image,int x,int y) {
 	img3 = img3 + newimg;
 
 	img3.copyTo(roi);
+//	printf("b");
 
+}
+void Display::set_reward(int reward) {
+	_reward = reward;
+}
+void Display::set_done(int done) {
+	_done = done;
+}
+void Display::set_life(int life) {
+	_life = life;
+}
+
+void Display::getdatas(int* reward, int* done,int *life) {
+	*reward = _reward;
+	*done = _done;
+	*life = _life;
+}
+
+void Display::reset() {
+	reset_flag = 1;
 }

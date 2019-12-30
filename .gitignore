@@ -1,5 +1,7 @@
 Dll1/x64
 Dll1/Debug
 Dll1/.vs
-Dll1/Dll1\Debug
-Dll1/Dll1\x64
+Dll1/Dll1/Debug
+Dll1/Dll1/x64
+*.h5
+__pycache__

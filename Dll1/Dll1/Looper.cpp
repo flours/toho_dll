@@ -19,8 +19,15 @@ Looper::Looper()
 @brief スタックのトップのシーンの処理をする
 */
 
-bool Looper::loop() const
+
+
+bool Looper::loop()
 {
+	if (Display::reset_flag)
+	{
+		reset();
+		Display::reset_flag = 0;
+	}
 	Display::image_reset();
 	_sceneStack.top()->update();    //スタックのトップのシーンを更新
 	_sceneStack.top()->draw();      //スタックのトップのシーンを描画
@@ -33,6 +40,15 @@ bool Looper::loop() const
 @param parameter 前のシーンから引き継ぐパラメータ
 @param stackClear 現在のシーンのスタックをクリアするか
 */
+
+void Looper::reset() {
+	while (!_sceneStack.empty()) {//スタックを全部ポップする(スタックを空にする)
+		_sceneStack.pop();
+	}
+	Parameter parameter;
+	_sceneStack.push(make_shared<GameScene>(this, parameter));
+}
+
 void Looper::onSceneChanged(const eScene scene, const Parameter& parameter, const bool stackClear)
 {
 	if (stackClear) {//スタッククリアなら

@@ -15,10 +15,14 @@ public:
 	float getX();
 	float getY();
 	cShot* getcShot() { return &_shot; }
+	int getreward();
+	int getdone();
 	void hit_judge(bullet_t* bullet);
+	int getlife() { return _life; }
 
 private:
 
+	int _life;
 	int _flag;
 	int _mutekicnt;
 	int _cnt;

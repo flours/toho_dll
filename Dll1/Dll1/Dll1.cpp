@@ -7,7 +7,7 @@
 #include"Dllinput.h"
 #include"Display.h"
 #include<opencv2/opencv.hpp>
-
+#include<stdio.h>
 SystemMain main_system;
 
 void hello() {
@@ -24,7 +24,7 @@ void finalize() {
 
 
 void input(int keys[256]) {
-	Dllinput::input(keys);
+	Dllinput::input(keys);	
 }
 
 int main() {
@@ -34,6 +34,12 @@ int main() {
 }
 
 
-void observe(unsigned char *img) {
+void observe(unsigned char *img, int* reward, int* life, int* done) {
 	memcpy(img, Display::main_image.datastart,sizeof(unsigned char)*640*480*3);
+	Display::getdatas(reward,done,life);
+}
+
+void reset()
+{
+	Display::reset();
 }

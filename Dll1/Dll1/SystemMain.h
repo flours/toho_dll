@@ -8,6 +8,6 @@ public:
 	~SystemMain() = default;
 	bool initialize() const;
 	void finalize() const;
-	void main() const;
+	void main();
 	Looper looper;
 };
